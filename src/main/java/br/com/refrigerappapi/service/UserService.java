@@ -108,5 +108,4 @@ public class UserService {
 		String pass2 = cpf.substring(0, 3);
 		return pass1.concat(pass2);
 	}
-	
 }

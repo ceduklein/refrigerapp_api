@@ -67,7 +67,7 @@ public class UserController {
 			User user = service.findById(id);
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
