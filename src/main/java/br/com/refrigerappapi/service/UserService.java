@@ -89,7 +89,7 @@ public class UserService {
 		repository.save(user);
 	}
 	
-	private void validateCredentials(Long admin_id)  throws RulesException {
+	public void validateCredentials(Long admin_id)  throws RulesException {
 		Optional<User> admin = repository.findById(admin_id);
 		if (!admin.isPresent() || !admin.get().isAdmin())
 			throw new RulesException("Operação não autorizada para este usuário.");
