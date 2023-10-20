@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.refrigerappapi.exception.RulesException;
@@ -18,8 +19,7 @@ public class ProductService {
 	@Autowired
 	private UserService userService;
 	
-	public Product save(Product prod) throws RulesException {
-		
+	public Product save(Product prod) throws RulesException {	
 		Product product = new Product();
 		product.setName(prod.getName());
 		product.setBrand(prod.getBrand());
@@ -36,7 +36,7 @@ public class ProductService {
 	}
 	
 	public List<Product> list() throws RulesException {
-		return repository.findAll();
+		return repository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 	}
 	
 	public List<Product> listActives() throws RulesException {
@@ -80,6 +80,20 @@ public class ProductService {
 		Product product = validateProduct(id);
 		product.setActive(!product.isActive());
 		
+		repository.save(product);
+	}
+
+	public void increaseStock(Long id, Integer quantity) throws RulesException {
+		Product product = validateProduct(id);
+		product.setQuantity(product.getQuantity() + quantity);
+
+		repository.save(product);
+	}
+
+	public void decreaseStock(Long id, Integer quantity) throws RulesException {
+		Product product = validateProduct(id);
+		product.setQuantity(product.getQuantity() - quantity);
+
 		repository.save(product);
 	}
 	

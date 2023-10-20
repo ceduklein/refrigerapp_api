@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
-
-	private String name;
-	private String login;
-	private String cpf;
-	private String password;
+public class ItemDTO {
+  
+  private Long IdOrder;
+  private Long IdProduct;
+  private Integer quantity;
 }

@@ -30,7 +30,7 @@ public class UserController {
 	@Autowired
 	private UserService service;
 	
-	@PostMapping("/register")
+	@PostMapping()
 	public ResponseEntity<?> save(@RequestBody UserDTO dto) {
 		try {
 			User user = service.save(dto);

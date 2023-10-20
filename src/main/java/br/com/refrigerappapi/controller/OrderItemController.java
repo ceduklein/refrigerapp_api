@@ -10,68 +10,68 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.refrigerappapi.dto.CustomerDTO;
-import br.com.refrigerappapi.model.entity.Customer;
-import br.com.refrigerappapi.service.CustomerService;
+import br.com.refrigerappapi.dto.ItemDTO;
+import br.com.refrigerappapi.model.entity.OrderItem;
+import br.com.refrigerappapi.service.OrderItemService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/customers")
-public class CustomerController {
-	
-	@Autowired
-	private CustomerService service;
-	
-	@PostMapping()
-	public ResponseEntity<?> save(@RequestBody CustomerDTO dto) {
+@RequestMapping("/api/items")
+public class OrderItemController {
+  
+  @Autowired
+  private OrderItemService service;
+
+  @PostMapping()
+	public ResponseEntity<?> save(@RequestBody ItemDTO dto) {
 		try {
-			Customer customer = service.save(dto);
-			return new ResponseEntity<>(customer, HttpStatus.CREATED);
+			OrderItem item = service.save(dto);
+			return new ResponseEntity<>(item, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
-	@GetMapping()
-	public ResponseEntity<?> list() {
+
+  @GetMapping()
+	public ResponseEntity<?> list(@RequestParam Long idOrder) {
 		try {
-			List<Customer> customers = service.list();
-			return new ResponseEntity<>(customers, HttpStatus.OK);
+			List<OrderItem> items = service.findByOrderId(idOrder);
+			return new ResponseEntity<>(items, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
-	@GetMapping("{id}")
+
+  @GetMapping("{id}")
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		try {
-			Customer customer = service.findById(id);
-			return new ResponseEntity<>(customer, HttpStatus.OK);
+			OrderItem item = service.findById(id);
+			return new ResponseEntity<>(item, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
-	@PutMapping("{id}")
-	public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @RequestBody CustomerDTO dto) {
-		try {
-			Customer customer = service.update(id, dto);
-			return new ResponseEntity<>(customer, HttpStatus.OK);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
-	
-	@DeleteMapping("{id}")
+
+  @DeleteMapping("{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		try {
 			service.delete(id);
-			return new ResponseEntity<>("Cliente excluído.", HttpStatus.OK);
+			return new ResponseEntity<>("Item excluído.", HttpStatus.OK);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/pedido/{id}")
+	public ResponseEntity<?> deleteOrder(@PathVariable("id") Long id) {
+		try {
+			service.deleteByOrderId(id);
+			return new ResponseEntity<>("Pedido excluído.", HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
