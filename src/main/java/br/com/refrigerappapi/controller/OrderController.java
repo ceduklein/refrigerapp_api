@@ -12,22 +12,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.refrigerappapi.dto.OrderDTO;
 import br.com.refrigerappapi.model.entity.Order;
 import br.com.refrigerappapi.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/orders")
+@Tag(name = "Order")
 public class OrderController {
 
   @Autowired
   private OrderService service;
 
   @PostMapping()
+	@Operation(summary = "Create")
 	public ResponseEntity<?> save(@RequestBody OrderDTO dto) {
 		try {
 			Order order = service.save(dto);
@@ -38,6 +41,7 @@ public class OrderController {
 	}
 
   @GetMapping()
+	@Operation(summary = "List All")
 	public ResponseEntity<?> list() {
 		try {
 			List<Order> orders = service.list();
@@ -48,6 +52,7 @@ public class OrderController {
 	}
 
   @GetMapping("{id}")
+	@Operation(summary = "Find By Id")
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		try {
 			Order order = service.findById(id);
@@ -58,6 +63,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/user/{id}")
+	@Operation(summary = "Find By User Id")
 	public ResponseEntity<?> findByUserId(@PathVariable("id") Long id) {
 		try {
 			List<Order> orders = service.findByUserId(id);
@@ -68,6 +74,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/customer/{id}")
+	@Operation(summary = "Find By Customer Id")
 	public ResponseEntity<?> findByCustomerId(@PathVariable("id") Long id) {
 		try {
 			List<Order> orders = service.findByCustomerId(id);
@@ -78,6 +85,7 @@ public class OrderController {
 	}
 
   @DeleteMapping("{id}")
+	@Operation(summary = "Delete")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		try {
 			service.delete(id);

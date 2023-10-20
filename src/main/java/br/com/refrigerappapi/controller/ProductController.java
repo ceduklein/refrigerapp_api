@@ -16,22 +16,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.refrigerappapi.dto.ProductDTO;
 import br.com.refrigerappapi.dto.UpdateProductDTO;
 import br.com.refrigerappapi.model.entity.Product;
 import br.com.refrigerappapi.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/products")
+@Tag(name = "Products")
 public class ProductController {
 
 	@Autowired
 	private ProductService service;
 	
 	@PostMapping()
-	public ResponseEntity<?> save(@RequestBody Product prod) {
+	@Operation(summary = "Create")
+	public ResponseEntity<?> save(@RequestBody ProductDTO dto) {
 		try {
-			Product product = service.save(prod);
+			Product product = service.save(dto);
 			return new ResponseEntity<>(product, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -39,6 +44,7 @@ public class ProductController {
 	}
 	
 	@GetMapping()
+	@Operation(summary = "List All")
 	public ResponseEntity<?> list() {
 		try {
 			List<Product> products = service.list();
@@ -49,6 +55,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/actives")
+	@Operation(summary = "List Actives")
 	public ResponseEntity<?> listActives() {
 		try {
 			List<Product> products = service.listActives();
@@ -59,6 +66,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("{id}")
+	@Operation(summary = "Find By Id")
 	public ResponseEntity<?> findById(@PathVariable Long id) {
 		try {
 			Product product = service.findById(id);
@@ -69,9 +77,10 @@ public class ProductController {
 	}
 	
 	@PutMapping("{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product prod) {
+	@Operation(summary = "Update")
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
 		try {
-			Product product = service.update(id, prod);
+			Product product = service.update(id, dto);
 			return new ResponseEntity<>(product, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -79,6 +88,7 @@ public class ProductController {
 	}
 	
 	@DeleteMapping("{id}")
+	@Operation(summary = "Delete")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		try {
 			service.delete(id);
@@ -89,6 +99,7 @@ public class ProductController {
 	}
 	
 	@PatchMapping("/update-quantity/{id}")
+	@Operation(summary = "Update Quantity")
 	public ResponseEntity<?> updateQuantity(@PathVariable Long id, @RequestBody UpdateProductDTO dto) {
 		try {
 			service.updateQuantity(id, dto.getAdmin_id(), dto.getQuantity());
@@ -99,6 +110,7 @@ public class ProductController {
 	}
 	
 	@PatchMapping("/status/{id}")
+	@Operation(summary = "Change Status")
 	public ResponseEntity<?> changeStatus(@PathVariable Long id, @RequestBody UpdateProductDTO dto) {
 		try {
 			service.changeStatus(id, dto.getAdmin_id());

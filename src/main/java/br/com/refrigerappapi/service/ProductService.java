@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import br.com.refrigerappapi.dto.ProductDTO;
 import br.com.refrigerappapi.exception.RulesException;
 import br.com.refrigerappapi.model.entity.Product;
 import br.com.refrigerappapi.model.repository.ProductRepository;
@@ -19,17 +20,17 @@ public class ProductService {
 	@Autowired
 	private UserService userService;
 	
-	public Product save(Product prod) throws RulesException {	
+	public Product save(ProductDTO dto) throws RulesException {	
 		Product product = new Product();
-		product.setName(prod.getName());
-		product.setBrand(prod.getBrand());
-		product.setCategory(prod.getCategory());
-		product.setModel(prod.getModel());
-		product.setEan(prod.getEan());
-		product.setVoltage(prod.getVoltage());
-		product.setValue(prod.getValue());
-		product.setQuantity(prod.getQuantity());
-		product.setImage(prod.getImage());
+		product.setName(dto.getName());
+		product.setBrand(dto.getBrand());
+		product.setCategory(dto.getCategory());
+		product.setModel(dto.getModel());
+		product.setEan(dto.getEan());
+		product.setVoltage(dto.getVoltage());
+		product.setValue(dto.getValue());
+		product.setQuantity(dto.getQuantity());
+		product.setImage(dto.getImage());
 		product.setActive(true);
 		
 		return repository.save(product);
@@ -51,16 +52,16 @@ public class ProductService {
 		return validateProduct(id);
 	}
 	
-	public Product update(Long id, Product prod) throws RulesException {
+	public Product update(Long id, ProductDTO dto) throws RulesException {
 		Product product = validateProduct(id);
-		product.setName(prod.getName());
-		product.setBrand(prod.getBrand());
-		product.setCategory(prod.getCategory());
-		product.setModel(prod.getModel());
-		product.setEan(prod.getEan());
-		product.setVoltage(prod.getVoltage());
-		product.setValue(prod.getValue());
-		product.setImage(prod.getImage());
+		product.setName(dto.getName());
+		product.setBrand(dto.getBrand());
+		product.setCategory(dto.getCategory());
+		product.setModel(dto.getModel());
+		product.setEan(dto.getEan());
+		product.setVoltage(dto.getVoltage());
+		product.setValue(dto.getValue());
+		product.setImage(dto.getImage());
 		
 		return repository.save(product);
 	}

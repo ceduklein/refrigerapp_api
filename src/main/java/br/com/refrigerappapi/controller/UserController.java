@@ -17,20 +17,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.refrigerappapi.dto.AdminDTO;
+import br.com.refrigerappapi.dto.AuthDTO;
 import br.com.refrigerappapi.dto.PassDTO;
 import br.com.refrigerappapi.dto.UserDTO;
 import br.com.refrigerappapi.model.entity.User;
 import br.com.refrigerappapi.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
+@Tag(name = "User")
 public class UserController {
 	
 	@Autowired
 	private UserService service;
 	
 	@PostMapping()
+	@Operation(summary = "Create")
 	public ResponseEntity<?> save(@RequestBody UserDTO dto) {
 		try {
 			User user = service.save(dto);
@@ -41,7 +46,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> authenticate(@RequestBody UserDTO dto) {
+	@Operation(summary = "Authenticate")
+	public ResponseEntity<?> authenticate(@RequestBody AuthDTO dto) {
 		try {
 			System.out.println(dto);
 			User user = service.authenticate(dto.getLogin(), dto.getPassword());
@@ -52,6 +58,7 @@ public class UserController {
 	}
 	
 	@GetMapping()
+	@Operation(summary = "List All")
 	public ResponseEntity<?> list(@RequestParam Long admin_id) {
 		try {
 			List<User> users = service.list(admin_id);
@@ -62,6 +69,7 @@ public class UserController {
 	}
 	
 	@GetMapping("{id}")
+	@Operation(summary = "Find By Id")
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		try {
 			User user = service.findById(id);
@@ -73,6 +81,7 @@ public class UserController {
 
 	
 	@PatchMapping("/credentials/{user_id}")
+	@Operation(summary = "Change Credentials")
 	public ResponseEntity<?> setAdmin(@PathVariable("user_id") Long user_id, @RequestBody AdminDTO dto) {
 		try {
 			service.setCredentials(user_id, dto.getAdmin_id());
@@ -83,6 +92,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping("{id}")
+	@Operation(summary = "Delete")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		try {
 			service.delete(id);
@@ -93,6 +103,7 @@ public class UserController {
 	}
 	
 	@PatchMapping("/change-password/{id}")
+	@Operation(summary = "Change Password")
 	public ResponseEntity<?> changePassword(@PathVariable("id") Long id, @RequestBody PassDTO dto) {
 		try {
 			service.changePassword(id, dto);

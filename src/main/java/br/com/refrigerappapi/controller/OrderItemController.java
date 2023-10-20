@@ -18,16 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.refrigerappapi.dto.ItemDTO;
 import br.com.refrigerappapi.model.entity.OrderItem;
 import br.com.refrigerappapi.service.OrderItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/items")
+@Tag(name = "Order-Item")
 public class OrderItemController {
   
   @Autowired
   private OrderItemService service;
 
   @PostMapping()
+	@Operation(summary = "Create")
 	public ResponseEntity<?> save(@RequestBody ItemDTO dto) {
 		try {
 			OrderItem item = service.save(dto);
@@ -38,6 +42,7 @@ public class OrderItemController {
 	}
 
   @GetMapping()
+	@Operation(summary = "Find By Order Id")
 	public ResponseEntity<?> list(@RequestParam Long idOrder) {
 		try {
 			List<OrderItem> items = service.findByOrderId(idOrder);
@@ -48,6 +53,7 @@ public class OrderItemController {
 	}
 
   @GetMapping("{id}")
+	@Operation(summary = "Find By Id")
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		try {
 			OrderItem item = service.findById(id);
@@ -58,6 +64,7 @@ public class OrderItemController {
 	}
 
   @DeleteMapping("{id}")
+	@Operation(summary = "Delete")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		try {
 			service.delete(id);
@@ -68,6 +75,7 @@ public class OrderItemController {
 	}
 	
 	@DeleteMapping("/pedido/{id}")
+	@Operation(summary = "Delete By Order Id")
 	public ResponseEntity<?> deleteOrder(@PathVariable("id") Long id) {
 		try {
 			service.deleteByOrderId(id);

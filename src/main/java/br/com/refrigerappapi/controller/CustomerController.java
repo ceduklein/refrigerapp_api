@@ -18,16 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.refrigerappapi.dto.CustomerDTO;
 import br.com.refrigerappapi.model.entity.Customer;
 import br.com.refrigerappapi.service.CustomerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/customers")
+@Tag(name = "Customer")
 public class CustomerController {
 	
 	@Autowired
 	private CustomerService service;
 	
 	@PostMapping()
+	@Operation(summary = "Create")
 	public ResponseEntity<?> save(@RequestBody CustomerDTO dto) {
 		try {
 			Customer customer = service.save(dto);
@@ -38,6 +42,7 @@ public class CustomerController {
 	}
 	
 	@GetMapping()
+	@Operation(summary = "List All")
 	public ResponseEntity<?> list() {
 		try {
 			List<Customer> customers = service.list();
@@ -48,6 +53,7 @@ public class CustomerController {
 	}
 	
 	@GetMapping("{id}")
+	@Operation(summary = "Find By Id")
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		try {
 			Customer customer = service.findById(id);
@@ -58,6 +64,7 @@ public class CustomerController {
 	}
 	
 	@PutMapping("{id}")
+	@Operation(summary = "Update")
 	public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @RequestBody CustomerDTO dto) {
 		try {
 			Customer customer = service.update(id, dto);
@@ -68,6 +75,7 @@ public class CustomerController {
 	}
 	
 	@DeleteMapping("{id}")
+	@Operation(summary = "Delete")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		try {
 			service.delete(id);
