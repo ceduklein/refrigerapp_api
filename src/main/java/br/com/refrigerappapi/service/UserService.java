@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.refrigerappapi.dto.PassDTO;
+import br.com.refrigerappapi.dto.UpdateUserDTO;
 import br.com.refrigerappapi.dto.UserDTO;
 import br.com.refrigerappapi.exception.RulesException;
 import br.com.refrigerappapi.model.entity.User;
@@ -51,6 +52,18 @@ public class UserService {
 			return user.get();
 		
 		throw new RulesException("Login ou senha incorretos.");
+	}
+
+	public User update(Long id, UpdateUserDTO dto) throws RulesException {
+		User user = validateUser(id);
+
+		if (repository.findByLoginWhere(id, dto.getLogin()).isPresent())
+			throw new RulesException("Este login já está sendo usado.");
+		
+		user.setName(dto.getName());
+		user.setLogin(dto.getLogin());
+
+		return repository.save(user);
 	}
 	
 	public User findById(Long id) throws RulesException {
