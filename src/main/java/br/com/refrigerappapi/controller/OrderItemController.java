@@ -74,7 +74,7 @@ public class OrderItemController {
 		}
 	}
 	
-	@DeleteMapping("/pedido/{id}")
+	@DeleteMapping("/order/{id}")
 	@Operation(summary = "Delete By Order Id")
 	public ResponseEntity<?> deleteOrder(@PathVariable("id") Long id) {
 		try {
