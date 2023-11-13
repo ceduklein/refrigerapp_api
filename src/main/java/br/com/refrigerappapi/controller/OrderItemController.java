@@ -41,12 +41,33 @@ public class OrderItemController {
 		}
 	}
 
-  @GetMapping()
+	@GetMapping()
+	public ResponseEntity<?> findAll() {
+		try {
+			List<OrderItem> items = service.findAll();
+			return new ResponseEntity<>(items, HttpStatus.OK);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+  @GetMapping("/order")
 	@Operation(summary = "Find By Order Id")
-	public ResponseEntity<?> list(@RequestParam Long idOrder) {
+	public ResponseEntity<?> findByOrderId(@RequestParam Long idOrder) {
 		try {
 			List<OrderItem> items = service.findByOrderId(idOrder);
-			return new ResponseEntity<>(items, HttpStatus.CREATED);
+			return new ResponseEntity<>(items, HttpStatus.OK);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/product")
+	@Operation(summary = "Find By Product Id")
+	public ResponseEntity<?> findByProductId(@RequestParam Long idProduct) {
+		try {
+			List<OrderItem> items = service.findByProductId(idProduct);
+			return new ResponseEntity<>(items, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

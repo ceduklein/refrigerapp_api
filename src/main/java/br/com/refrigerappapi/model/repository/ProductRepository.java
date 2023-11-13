@@ -9,6 +9,6 @@ import br.com.refrigerappapi.model.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-	@Query("from Product p where p.isActive = true")
+	@Query("from Product p where p.isActive = true order by name")
 	List<Product> findActives();
 }

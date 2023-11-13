@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.refrigerappapi.dto.ItemDTO;
@@ -41,6 +42,10 @@ public class OrderItemService {
     return savedItem;
   }
 
+  public List<OrderItem> findAll() throws RulesException {
+    return repository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+  }
+
   public OrderItem findById(Long id) throws RulesException {
 		  return validateItem(id);
 	}
@@ -49,6 +54,11 @@ public class OrderItemService {
 		Order order = orderService.findById(idOrder);
 		return repository.findByOrder(order);
 	}
+
+  public List<OrderItem> findByProductId(Long idProduct) throws RulesException {
+    Product product = productService.findById(idProduct);
+    return repository.findByProduct(product);
+  }
 
   public void delete(Long id) throws RulesException {
 		OrderItem item = validateItem(id);
