@@ -62,6 +62,7 @@ public class ProductService {
 		product.setVoltage(dto.getVoltage());
 		product.setValue(dto.getValue());
 		product.setImage(dto.getImage());
+		product.setQuantity(dto.getQuantity());
 		
 		return repository.save(product);
 	}
